@@ -29,7 +29,7 @@ const jury_four =  [1,0,1,0,1,1,1,0,1,1,1,0,1,1,1,1,1,1];
 var juries = [jury_One, jury_Two, jury_Three , jury_four];
 // paralel durum
 // aynı jürinin müsaitlik durumu
-var arr_dayThree = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; //[[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0]];
+var arr_dayThree = [[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0]]; //[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; //
 var arr_dayFour  = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
 //arrMayThird[i].push(proje1)
@@ -89,19 +89,6 @@ function reserve(dayArr, value, group){
     if(value==90){
         
         for(let i=0; i< 18; i++){
-           /* let a,b,c;
-            /*
-            if(jury_One[i] + 
-                jury_One[i+1] + 
-                jury_One[i+2] == 3){
-                    a = 1;
-                }
-
-            a = jury_One[i] + jury_Two[i] + jury_Three[i] + jury_four[i]; 
-            b = jury_One[i+1] + jury_Two[i+1] + jury_Three[i+1] + jury_four[i+1]; 
-            c = jury_One[i+2] + jury_Two[i+2] + jury_Three[i+2] + jury_four[i+2];*/
-
-
 
             //console.log(i +". index")
             var avaible = 0;
@@ -110,17 +97,25 @@ function reserve(dayArr, value, group){
                 JuryAvaibility[a] = juries[a][i] + juries[a][i+1] + juries[a][i+2];
                
                 if(JuryAvaibility[a]>2){
-                    avaible++; //buraya dön
-                }
+                    avaible++; //buraya dön 
+                 }
             }
-            
-            if(avaible >= 3 && avaible < 6 && dayArr[i] == 0 && dayArr[i+1]==0 && dayArr[i+2]==0){
+            if(avaible >= 3){
                 //console.log(avaible + " tur" + i);
-                dayArr[i]=group;
-                dayArr[i+1]=group;
-                dayArr[i+2]=group;
-                Status = true;
-                break;
+                let a;
+                for(let x=0; x<4; x++){
+                    if(avaible >= 3 &&  dayArr[i][x]==0 && dayArr[i+1][x]==0 && dayArr[i+2][x]==0){
+                        dayArr[i][x]=group;
+                        dayArr[i+1][x]=group;
+                        dayArr[i+2][x]=group;
+                        Status = true;
+                        break;
+                    }
+                    else{
+                        avaible-3;
+                    }
+                } 
+                break;   
             }
             else{
                 Status = false;
@@ -135,18 +130,27 @@ function reserve(dayArr, value, group){
             var avaible = 0;
 
             for(let a = 0; a < juries.length; a++){ //jürilerin arrayi ilerliyor
-                JuryAvaibility[a] = juries[a][i] + juries[a][i+1] + juries[a][i+2];
+                JuryAvaibility[a] = juries[a][i] + juries[a][i+1];
                
-                if(JuryAvaibility[a]>2){
+                if(JuryAvaibility[a]>=2){
                     avaible++; //buraya dön
                 }
             }
 
-            if(avaible >= 2 && avaible < 4 && dayArr[i] == 0 && dayArr[i+1] == 0){
-                dayArr[i]=group;
-                dayArr[i+1]=group;
-                Status = true;
-                break;
+            if(avaible >= 3){
+
+                for(let x=0; x<4; x++){
+                    if(avaible >= 2 &&  dayArr[i][x]==0 && dayArr[i+1][x]==0){
+                        dayArr[i][x]=group;
+                        dayArr[i+1][x]=group;
+                        Status = true;
+                        break;
+                    }
+                    else{
+                        avaible-2;
+                    }
+                }
+                break;    
             }
             else{
                 Status = false;
@@ -158,24 +162,29 @@ function reserve(dayArr, value, group){
             var avaible = 0;
 
             for(let a = 0; a < juries.length; a++){ //jürilerin arrayi ilerliyor
-                JuryAvaibility[a] = juries[a][i] + juries[a][i+1] + juries[a][i+2];
+                JuryAvaibility[a] = juries[a][i]
                
-                if(JuryAvaibility[a]>2){
+                if(JuryAvaibility[a]>=1){
                     avaible++; //buraya dön
                 }
             }
-            for(let x=0; x<4; x++){
-                if(avaible=x && dayArr[i] == 0){
-                    dayArr[i]=group;
-                    Status = true;
-                    break;
-                }
-                else{
-                
-                    Status = false;
-                }
+                       
+            if(avaible>=3){
+                for(let x=0; x<4; x++){
+                    if(avaible >= 1 &&  dayArr[i][x]==0){
+                        dayArr[i][x]=group;
+                        Status = true;
+                        break;
+                    }
+                    else{
+                        avaible-1;
+                    }
+                } 
+                break;   
             }
-            
+            else{    
+            Status = false;
+            }          
         }
     }
     return;
@@ -218,7 +227,7 @@ function getInputValueThird(){
        if(Status==false || ninetyCounter>2){
            alert("this day is not avaible for you");
        }
-       arr_dayThree = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+       arr_dayThree = [[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0]];
 
         //console.log(arr_dayThree);
         console.dir(arrMayThird);
@@ -240,15 +249,23 @@ function getInputValueThird(){
         for(let i = 0; i<arrMayThird.Length.length; i++){
             reserve(arr_dayThree, arrMayThird.Length[i], arrMayThird.Groups[i]);
         }
-        console.log(arr_dayThree + "\n\n");
 
+        for(i = 0 ; i < arr_dayThree.length; i++){
+            for(j=0;j<4;j++){
+                console.log(arr_dayThree[i][j] + "\n");
+            }
+            
+        }
         var ab = -1;
 
         for(i = 0 ; i < arr_dayThree.length; i++){
-            ab = arr_dayThree[i];
-            if(ab != 0 && ab != arr_dayThree[i-1]){
-                console.log(presentation_hours[i] + " is starting hour of group number " + ab);
+            for(j=0;j<4;j++){
+                ab = arr_dayThree[i][j];
+                if(ab != 0 && ab != arr_dayThree[i-1]){
+                    console.log(presentation_hours[i] + " is starting hour of group number " + ab);
+                }
             }
+            
         }
     }
     return;
