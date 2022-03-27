@@ -30,6 +30,8 @@ const jury_four =  [0,1,0,1,1,1,0,1,0,0,0,0,0,1,1,1,1,1];
 var arr_dayThree = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 var arr_dayFour  = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
+//arrMayThird[i].push(proje1)
+//arrMayThird[i].push(proje2)
 
 
 
