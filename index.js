@@ -19,17 +19,17 @@ function displayDivTwo() {
     }
 } 
 
-const presentation_hours = ["12.00","12.30","13.00","13.30","14.00","14.30","15.00","15,30","16.00","16.30","17.00","17.30","18.00","18.30","19.00","19.30","20.00","20.30","21.00"];
+const presentation_hours = ["12.00","12.30","13.00","13.30","14.00","14.30","15.00","15.30","16.00","16.30","17.00","17.30","18.00","18.30","19.00","19.30","20.00","20.30","21.00"];
 console.log(presentation_hours);
 
 const jury_One =   [1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,1,1];
-const jury_Two =   [0,1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1,1];
-const jury_Three = [1,1,0,0,1,1,1,0,0,1,1,1,1,1,0,1,0,0];
-const jury_four =  [1,0,1,0,1,1,1,0,1,1,0,0,0,1,1,1,1,1];
+const jury_Two =   [1,1,1,0,1,1,1,0,1,0,1,0,0,1,1,0,1,1];
+const jury_Three = [1,1,0,1,1,1,1,0,0,1,1,1,1,1,1,1,0,0];
+const jury_four =  [1,0,1,0,1,1,1,0,1,1,1,0,1,1,1,1,1,1];
 var juries = [jury_One, jury_Two, jury_Three , jury_four];
 // paralel durum
 // aynı jürinin müsaitlik durumu
-var arr_dayThree = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+var arr_dayThree = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; //[[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0]];
 var arr_dayFour  = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
 //arrMayThird[i].push(proje1)
@@ -103,18 +103,19 @@ function reserve(dayArr, value, group){
 
 
 
-            
+            //console.log(i +". index")
+            var avaible = 0;
 
             for(let a = 0; a < juries.length; a++){ //jürilerin arrayi ilerliyor
                 JuryAvaibility[a] = juries[a][i] + juries[a][i+1] + juries[a][i+2];
                
-                if(JuryAvaibility[a]=3){
+                if(JuryAvaibility[a]>2){
                     avaible++; //buraya dön
                 }
             }
-
-            if(avaible>=3 && dayArr[i] == 0 && dayArr[i+1]==0 && dayArr[i+2]==0){
-
+            
+            if(avaible >= 3 && avaible < 6 && dayArr[i] == 0 && dayArr[i+1]==0 && dayArr[i+2]==0){
+                //console.log(avaible + " tur" + i);
                 dayArr[i]=group;
                 dayArr[i+1]=group;
                 dayArr[i+2]=group;
@@ -130,11 +131,18 @@ function reserve(dayArr, value, group){
 
 
         for(let i=0; i< 18; i++){
-            let a,b,c;
-            a = jury_One[i] + jury_Two[i] + jury_Three[i] + jury_four[i]; 
-            b = jury_One[i+1] + jury_Two[i+1] + jury_Three[i+1] + jury_four[i+1]; 
+            
+            var avaible = 0;
 
-            if(a>2 && b>2 && dayArr[i] == 0 && dayArr[i+1] == 0){
+            for(let a = 0; a < juries.length; a++){ //jürilerin arrayi ilerliyor
+                JuryAvaibility[a] = juries[a][i] + juries[a][i+1] + juries[a][i+2];
+               
+                if(JuryAvaibility[a]>2){
+                    avaible++; //buraya dön
+                }
+            }
+
+            if(avaible >= 2 && avaible < 4 && dayArr[i] == 0 && dayArr[i+1] == 0){
                 dayArr[i]=group;
                 dayArr[i+1]=group;
                 Status = true;
@@ -147,17 +155,27 @@ function reserve(dayArr, value, group){
     }
     if(value==30){
         for(let i=0; i< 18; i++){
-            let a,b,c;
-            a = jury_One[i] + jury_Two[i] + jury_Three[i] + jury_four[i]; 
-            if(a>2 && dayArr[i] == 0){
-                dayArr[i]=group;
-                Status = true;
-                break;
+            var avaible = 0;
+
+            for(let a = 0; a < juries.length; a++){ //jürilerin arrayi ilerliyor
+                JuryAvaibility[a] = juries[a][i] + juries[a][i+1] + juries[a][i+2];
+               
+                if(JuryAvaibility[a]>2){
+                    avaible++; //buraya dön
+                }
             }
-            else{
+            for(let x=0; x<4; x++){
+                if(avaible=x && dayArr[i] == 0){
+                    dayArr[i]=group;
+                    Status = true;
+                    break;
+                }
+                else{
                 
-                Status = false;
+                    Status = false;
+                }
             }
+            
         }
     }
     return;
