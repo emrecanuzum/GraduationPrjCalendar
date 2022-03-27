@@ -21,10 +21,12 @@ function displayDivTwo() {
 
 const presentation_hours = ["12.00","12.30","13.00","13.30","14.00","14.30","15.00","15,30","16.00","16.30","17.00","17.30","18.00","18.30","19.00","19.30","20.00","20.30","21.00"];
 console.log(presentation_hours);
-const jury_One =   [1,1,0,1,0,1,1,1,0,1,1,0,1,1,1,1,1,1];
-const jury_Two =   [1,0,1,1,1,0,1,0,1,1,1,0,1,1,1,0,1,1];
-const jury_Three = [1,1,1,0,1,1,1,1,0,1,1,1,1,1,0,0,0,0];
-const jury_four =  [0,1,0,1,1,1,0,1,0,0,0,0,0,1,1,1,1,1];
+
+const jury_One =   [1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,1,1];
+const jury_Two =   [0,1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1,1];
+const jury_Three = [1,1,0,0,1,1,1,0,0,1,1,1,1,1,0,1,0,0];
+const jury_four =  [1,0,1,0,1,1,1,0,1,1,0,0,0,1,1,1,1,1];
+var juries = [jury_One, jury_Two, jury_Three , jury_four];
 // paralel durum
 // aynı jürinin müsaitlik durumu
 var arr_dayThree = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
@@ -32,7 +34,6 @@ var arr_dayFour  = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
 
 //arrMayThird[i].push(proje1)
 //arrMayThird[i].push(proje2)
-
 
 
 
@@ -83,21 +84,36 @@ function bubleSort(arr, arrNum, n)
 
 var Status = true;
 function reserve(dayArr, value, group){
-    
+
+    let JuryAvaibility = [];
     if(value==90){
+        
         for(let i=0; i< 18; i++){
-            let a,b,c;
+           /* let a,b,c;
             /*
             if(jury_One[i] + 
                 jury_One[i+1] + 
                 jury_One[i+2] == 3){
                     a = 1;
-                }*/
+                }
+
             a = jury_One[i] + jury_Two[i] + jury_Three[i] + jury_four[i]; 
             b = jury_One[i+1] + jury_Two[i+1] + jury_Three[i+1] + jury_four[i+1]; 
-            c = jury_One[i+2] + jury_Two[i+2] + jury_Three[i+2] + jury_four[i+2];
+            c = jury_One[i+2] + jury_Two[i+2] + jury_Three[i+2] + jury_four[i+2];*/
 
-            if(a>2 && b>2 && c>2 && dayArr[i] == 0 && dayArr[i+1]==0 && dayArr[i+2]==0){
+
+
+            
+
+            for(let a = 0; a < juries.length; a++){ //jürilerin arrayi ilerliyor
+                JuryAvaibility[a] = juries[a][i] + juries[a][i+1] + juries[a][i+2];
+               
+                if(JuryAvaibility[a]=3){
+                    avaible++; //buraya dön
+                }
+            }
+
+            if(avaible>=3 && dayArr[i] == 0 && dayArr[i+1]==0 && dayArr[i+2]==0){
 
                 dayArr[i]=group;
                 dayArr[i+1]=group;
@@ -111,6 +127,8 @@ function reserve(dayArr, value, group){
         }
     }
     if(value==60){
+
+
         for(let i=0; i< 18; i++){
             let a,b,c;
             a = jury_One[i] + jury_Two[i] + jury_Three[i] + jury_four[i]; 
@@ -152,6 +170,9 @@ function reserve(dayArr, value, group){
 function getInputValueThird(){
     var GroupInputt = document.getElementById("GroupInput").value;
     var inputValt = document.getElementById("input").value;
+
+
+    //console.log(juries[1][1]);
 
     let GroupInput = parseInt(GroupInputt);
     let inputVal = parseInt(inputValt);
