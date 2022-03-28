@@ -155,7 +155,7 @@ function reserve(dayArr, value, group){
 
                     if(dayArr[i][x]>0 && dayArr[i+1][x]>0){
                         avaible = avaible-3;
-                        console.log("müsait silinme sonra" + avaible);
+                        //console.log("müsait silinme sonra" + avaible);
                         Status = false;
                     }
 
@@ -192,13 +192,13 @@ function reserve(dayArr, value, group){
                     avaible++; //buraya dön
                 }
             }
-            console.log(" müsait " + avaible);
+            //console.log(" müsait " + avaible);
             if(avaible>=3){
                 for(let x=0; x<4; x++){
-                    console.log(" günün o saatinde " + dayArr[i][x]+ " ve müsait " + avaible);
+                    //console.log(" günün o saatinde " + dayArr[i][x]+ " ve müsait " + avaible);
                     if(dayArr[i][x]>0){
                         avaible = avaible-3;
-                        console.log("müsait silinme sonra" + avaible);
+                        //console.log("müsait silinme sonra" + avaible);
                         Status = false;
                     }
 
@@ -313,7 +313,7 @@ function getInputValueThird(){
         a = 0;
         for(let i = 0; i<arr_dayThree.length; i++){
 
-            console.log("\n\n " + a + ". index of day")
+            console.log( a + ". index of day")
             for(let j=0; j<2;j++){
 
                 if(arr_dayThree[i][j]!=0 && arr_dayThree[i][j]!=undefined)
