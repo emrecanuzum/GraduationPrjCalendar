@@ -24,9 +24,11 @@ console.log(presentation_hours);
 
 const jury_One =   [1,1,1,0,1,1,1,0,1,1,1,0,1,1,1,1,1,1];
 const jury_Two =   [1,1,1,0,1,1,1,0,1,0,1,0,0,1,1,0,1,1];
-const jury_Three = [1,1,0,1,1,1,1,0,0,1,1,1,1,1,1,1,0,0];
-const jury_four =  [1,0,1,0,1,1,1,0,1,1,1,0,1,1,1,1,1,1];
-var juries = [jury_One, jury_Two, jury_Three , jury_four];
+const jury_Three = [1,1,0,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1];
+const jury_four =  [1,1,0,0,1,1,1,0,1,1,1,0,1,1,1,1,1,1];
+const jury_five =  [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+const jury_six =   [1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+var juries = [jury_One, jury_Two, jury_Three , jury_four, jury_five, jury_six];
 // paralel durum
 // aynı jürinin müsaitlik durumu
 var arr_dayThree = [[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0]]; //[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]; //
@@ -88,22 +90,26 @@ function reserve(dayArr, value, group){
     let JuryAvaibility = [];
     if(value==90){
         
-        for(let i=0; i< 18; i++){
+        for(let i=0; i< dayArr.length; i++){
 
             //console.log(i +". index")
             var avaible = 0;
 
             for(let a = 0; a < juries.length; a++){ //jürilerin arrayi ilerliyor
                 JuryAvaibility[a] = juries[a][i] + juries[a][i+1] + juries[a][i+2];
-               
                 if(JuryAvaibility[a]>2){
                     avaible++; //buraya dön 
                  }
             }
             if(avaible >= 3){
                 //console.log(avaible + " tur" + i);
-                let a;
                 for(let x=0; x<4; x++){
+                    
+                    if(dayArr[i][x]>0 && dayArr[i+1][x]>0 && dayArr[i+2][x]>0){
+                        avaible = avaible-3;
+                        Status = false;
+                    }
+
                     if(avaible >= 3 &&  dayArr[i][x]==0 && dayArr[i+1][x]==0 && dayArr[i+2][x]==0){
                         dayArr[i][x]=group;
                         dayArr[i+1][x]=group;
@@ -111,11 +117,17 @@ function reserve(dayArr, value, group){
                         Status = true;
                         break;
                     }
-                    else{
-                        avaible-3;
+
+                    if(avaible >= 3 &&  dayArr[i][x]==undefined && dayArr[i+1][x]==undefined && dayArr[i+2][x]==undefined){
+                        dayArr[i][x]=group;
+                        dayArr[i+1][x]=group;
+                        dayArr[i+2][x]=group;
+                        Status = true;
+                        break;
                     }
                 } 
-                break;   
+                if(Status==true){
+                    break;}
             }
             else{
                 Status = false;
@@ -123,34 +135,46 @@ function reserve(dayArr, value, group){
         }
     }
     if(value==60){
-
-
-        for(let i=0; i< 18; i++){
-            
-            var avaible = 0;
+       
+        for(let i=0; i< dayArr.length-2; i++){
+            var avaible = 0; 
 
             for(let a = 0; a < juries.length; a++){ //jürilerin arrayi ilerliyor
                 JuryAvaibility[a] = juries[a][i] + juries[a][i+1];
                
                 if(JuryAvaibility[a]>=2){
                     avaible++; //buraya dön
+                    
                 }
             }
+            
 
             if(avaible >= 3){
+            for(let x=0; x<4; x++){
+                    
 
-                for(let x=0; x<4; x++){
-                    if(avaible >= 2 &&  dayArr[i][x]==0 && dayArr[i+1][x]==0){
+                    if(dayArr[i][x]>0 && dayArr[i+1][x]>0){
+                        avaible = avaible-3;
+                        console.log("müsait silinme sonra" + avaible);
+                        Status = false;
+                    }
+
+                    if(avaible >= 3 &&  dayArr[i][x]==0  &&  dayArr[i+1][x]==0) {
                         dayArr[i][x]=group;
                         dayArr[i+1][x]=group;
                         Status = true;
                         break;
                     }
-                    else{
-                        avaible-2;
+                    if(avaible >= 3 &&  dayArr[i][x]==undefined &&  dayArr[i+1][x]==undefined) {
+                        dayArr[i][x]=group;
+                        dayArr[i+1][x]=group;
+                        Status = true;
+                        break;
                     }
+                    
                 }
-                break;    
+                if(Status==true){
+                    break;}
             }
             else{
                 Status = false;
@@ -158,7 +182,7 @@ function reserve(dayArr, value, group){
         }
     }
     if(value==30){
-        for(let i=0; i< 18; i++){
+        for(let i=0; i< dayArr.length; i++){
             var avaible = 0;
 
             for(let a = 0; a < juries.length; a++){ //jürilerin arrayi ilerliyor
@@ -168,19 +192,29 @@ function reserve(dayArr, value, group){
                     avaible++; //buraya dön
                 }
             }
-                       
+            console.log(" müsait " + avaible);
             if(avaible>=3){
                 for(let x=0; x<4; x++){
-                    if(avaible >= 1 &&  dayArr[i][x]==0){
+                    console.log(" günün o saatinde " + dayArr[i][x]+ " ve müsait " + avaible);
+                    if(dayArr[i][x]>0){
+                        avaible = avaible-3;
+                        console.log("müsait silinme sonra" + avaible);
+                        Status = false;
+                    }
+
+                    if(avaible >= 3 &&  dayArr[i][x]==0){
                         dayArr[i][x]=group;
                         Status = true;
                         break;
                     }
-                    else{
-                        avaible-1;
+                    if(avaible >= 3 &&  dayArr[i][x]==undefined){
+                        dayArr[i][x]=group;
+                        Status = true;
+                        break;
                     }
                 } 
-                break;   
+                if(Status==true){
+                    break;}  
             }
             else{    
             Status = false;
@@ -222,13 +256,13 @@ function getInputValueThird(){
         let ninetyCounter; 
         if(inputVal==90)
             ninetyCounter++;
-
+/*
        reserve(arr_dayThree, inputVal, GroupInput);
        if(Status==false || ninetyCounter>2){
            alert("this day is not avaible for you");
        }
        arr_dayThree = [[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0],[0]];
-
+*/
         //console.log(arr_dayThree);
         console.dir(arrMayThird);
 
@@ -244,29 +278,60 @@ function getInputValueThird(){
     }
     console.log(sumThird);
 
+
+
+
+
+
+
+
+
+
     if(sumThird>=300){
 
         for(let i = 0; i<arrMayThird.Length.length; i++){
             reserve(arr_dayThree, arrMayThird.Length[i], arrMayThird.Groups[i]);
         }
 
-        for(i = 0 ; i < arr_dayThree.length; i++){
-            for(j=0;j<4;j++){
-                console.log(arr_dayThree[i][j] + "\n");
-            }
+        /*
+        console.log(arr_dayThree + "\n");
             
-        }
         var ab = -1;
 
         for(i = 0 ; i < arr_dayThree.length; i++){
             for(j=0;j<4;j++){
                 ab = arr_dayThree[i][j];
-                if(ab != 0 && ab != arr_dayThree[i-1]){
+                if(ab != 0 && ab != undefined && ab != arr_dayThree[i-1]){
                     console.log(presentation_hours[i] + " is starting hour of group number " + ab);
                 }
             }
             
         }
+
+        console.log(arr_dayThree[0][0] + " ve " + arr_dayThree[5][0]);*/
+
+        a = 0;
+        for(let i = 0; i<arr_dayThree.length; i++){
+
+            console.log("\n\n " + a + ". index of day")
+            for(let j=0; j<2;j++){
+
+                if(arr_dayThree[i][j]!=0 && arr_dayThree[i][j]!=undefined)
+                console.log(arr_dayThree[i][j]);
+
+            }
+            
+
+            
+            a++;
+            
+
+        }
+
+
+
+
+
     }
     return;
     
